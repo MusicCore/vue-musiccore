@@ -1,9 +1,7 @@
 <template>
   <p class="warn-content">
-    创建和编辑页面是不能被keep-alive 缓存的，因为keep-alive 的include 目前不支持根据路由来缓存，所以目前都是基于component name 来缓存的，如果你想要实现缓存的效果，可以使用localstorage 等游览器缓存方案。或者不要使用keep-alive
-    的include，直接缓存所有页面。详情见
-    <a href="https://panjiachen.github.io/vue-element-admin-site/guide/essentials/tags-view.html"
-      target="_blank">文档</a>
+    以下标题必填哦，摘要展示谱子的大概内容，描述之类的。编辑器里面可以直接插入谱子（word编辑后可以支持插入，大概格式不会乱),富文本里插入图片，视频等都要从外链插入哦，无法直接插入本地图片。  
+    要插入本地图片点右边的 "上传图片" 哦<img src="static/tinymce4.7.5/plugins/emoticons/img/smiley-sealed.gif" alt="sealed" />
   </p>
 </template>
 

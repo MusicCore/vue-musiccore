@@ -37,7 +37,7 @@ const whiteList = ['/login'] // 不重定向白名单
 
 // permission judge function
 function hasPermission(roles, permissionRoles) {
-  if (roles.indexOf('admin') >= 0) return true // admin permission passed directly
+  if (roles.indexOf('superadmin') >= 0) return true // admin permission passed directly
   if (!permissionRoles) return true
   return roles.some(role => permissionRoles.indexOf(role) >= 0)
   // for (let index = 0; index < roles.length; index++) {

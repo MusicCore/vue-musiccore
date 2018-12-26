@@ -1,7 +1,7 @@
 <template>
   <el-dropdown :hide-on-click="false" :show-timeout="100" trigger="click">
     <el-button plain>
-      平台({{platforms.length}})
+      类型({{platforms.length}})
       <i class="el-icon-caret-bottom el-icon--right"></i>
     </el-button>
     <el-dropdown-menu class="no-border" slot="dropdown">
@@ -20,9 +20,9 @@ export default {
   data() {
     return {
       platformsOptions: [
-        { key: 'a-platform', name: 'a-platform' },
-        { key: 'b-platform', name: 'b-platform' },
-        { key: 'c-platform', name: 'c-platform' }
+        { key: 'pic', name: '有图片' },
+        { key: 'song', name: '有伴奏' },
+        { key: 'video', name: '有视频' }
       ]
     }
   },

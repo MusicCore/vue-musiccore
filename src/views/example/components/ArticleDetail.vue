@@ -3,12 +3,13 @@
     <el-form class="form-container" :model="postForm" :rules="rules" ref="postForm">
 
       <sticky :className="'sub-navbar '+postForm.status">
-        <CommentDropdown v-model="postForm.comment_disabled" />
-        <PlatformDropdown v-model="postForm.platforms" />
-        <SourceUrlDropdown v-model="postForm.source_uri" />
+        <ModifyDropdown v-model="postForm.is_modify" />
+        <span v-if="roles[0] === 'superadmin' || roles[0] === 'admin'"><DeleteDropdown v-model="postForm.is_delete" /></span>
+        <!-- <PlatformDropdown v-model="postForm.types" /> -->
+        <!-- <SourceUrlDropdown v-model="postForm.source_uri" /> -->
         <el-button v-loading="loading" style="margin-left: 10px;" type="success" @click="submitForm">发布
         </el-button>
-        <el-button v-loading="loading" type="warning" @click="draftForm">草稿</el-button>
+        <!-- <el-button v-loading="loading" type="warning" @click="draftForm">草稿</el-button> -->
       </sticky>
 
       <div class="createPost-main-container">
@@ -25,16 +26,16 @@
 
             <div class="postInfo-container">
               <el-row>
-                <el-col :span="8">
+                <!-- <el-col :span="8">
                   <el-form-item label-width="45px" label="作者:" class="postInfo-container-item">
                     <el-select v-model="postForm.author" filterable remote placeholder="搜索用户" :remote-method="getRemoteUserList">
                       <el-option v-for="(item,index) in userListOptions" :key="item+index" :label="item" :value="item">
                       </el-option>
                     </el-select>
                   </el-form-item>
-                </el-col>
+                </el-col> -->
 
-                <el-col :span="10">
+                <!-- <el-col :span="10">
                   <el-form-item label-width="80px" label="发布时间:" class="postInfo-container-item">
                     <el-date-picker v-model="postForm.display_time" type="datetime" format="yyyy-MM-dd HH:mm:ss" placeholder="选择日期时间">
                     </el-date-picker>
@@ -47,7 +48,7 @@
                       :high-threshold="3">
                     </el-rate>
                   </el-form-item>
-                </el-col>
+                </el-col> -->
               </el-row>
             </div>
           </el-col>
@@ -83,7 +84,8 @@ import { validateURL } from '@/utils/validate'
 import { fetchArticle } from '@/api/article'
 import { userSearch } from '@/api/remoteSearch'
 import Warning from './Warning'
-import { CommentDropdown, PlatformDropdown, SourceUrlDropdown } from './Dropdown'
+import { DeleteDropdown, ModifyDropdown, PlatformDropdown, SourceUrlDropdown } from './Dropdown'
+import { mapGetters } from 'vuex'
 
 const defaultForm = {
   status: 'draft',
@@ -91,17 +93,18 @@ const defaultForm = {
   content: '', // 文章内容
   content_short: '', // 文章摘要
   source_uri: '', // 文章外链
-  image_uri: '', // 文章图片
-  display_time: undefined, // 前台展示时间
+  // image_uri: '', // 文章图片
+  // display_time: undefined, // 前台展示时间
   id: undefined,
-  platforms: ['a-platform'],
-  comment_disabled: false,
-  importance: 0
+  // types: ['pic'],
+  // importance: 0 , // 星级重要性
+  is_modify: 1, // 下拉
+  is_delete: 0
 }
 
 export default {
   name: 'articleDetail',
-  components: { Tinymce, MDinput, Upload, Multiselect, Sticky, Warning, CommentDropdown, PlatformDropdown, SourceUrlDropdown },
+  components: { Tinymce, MDinput, Upload, Multiselect, Sticky, Warning, DeleteDropdown, ModifyDropdown, PlatformDropdown, SourceUrlDropdown },
   props: {
     isEdit: {
       type: Boolean,
@@ -150,7 +153,10 @@ export default {
   computed: {
     contentShortLength() {
       return this.postForm.content_short.length
-    }
+    },
+    ...mapGetters([
+      'roles'
+    ])
   },
   created() {
     if (this.isEdit) {
@@ -164,9 +170,6 @@ export default {
     fetchData(id) {
       fetchArticle(id).then(response => {
         this.postForm = response.data
-        // Just for test
-        this.postForm.title += `   Article Id:${this.postForm.id}`
-        this.postForm.content_short += `   Article Id:${this.postForm.id}`
       }).catch(err => {
         console.log(err)
       })

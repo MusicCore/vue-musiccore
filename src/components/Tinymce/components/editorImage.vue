@@ -3,8 +3,8 @@
     <el-button icon='el-icon-upload' size="mini" :style="{background:color,borderColor:color}" @click=" dialogVisible=true" type="primary">上传图片
     </el-button>
     <el-dialog append-to-body :visible.sync="dialogVisible">
-      <el-upload class="editor-slide-upload" action="https://httpbin.org/post" :multiple="true" :file-list="fileList" :show-file-list="true"
-        list-type="picture-card" :on-remove="handleRemove" :on-success="handleSuccess" :before-upload="beforeUpload">
+      <el-upload class="editor-slide-upload" action="http://localhost:8080/api/upload" :multiple="true" :file-list="fileList" :show-file-list="true"
+        list-type="picture-card" :on-remove="handleRemove"  :before-upload="beforeUpload" :http-request="imgUpLoad">
         <el-button size="small" type="primary">点击上传</el-button>
       </el-upload>
       <el-button @click="dialogVisible = false">取 消</el-button>
@@ -15,6 +15,10 @@
 
 <script>
 // import { getToken } from 'api/qiniu'
+import Vue from 'vue'
+import axios from 'axios'
+
+Vue.prototype.axios = axios
 
 export default {
   name: 'editorSlideUpload',
@@ -38,26 +42,28 @@ export default {
     handleSubmit() {
       const arr = Object.keys(this.listObj).map(v => this.listObj[v])
       if (!this.checkAllSuccess()) {
-        this.$message('请等待所有图片上传成功 或 出现了网络问题，请刷新页面重新上传！')
+        this.$message('正在努力上传中')
         return
       }
-      console.log(arr)
+      // console.log(arr)
       this.$emit('successCBK', arr)
       this.listObj = {}
       this.fileList = []
       this.dialogVisible = false
     },
-    handleSuccess(response, file) {
-      const uid = file.uid
-      const objKeyArr = Object.keys(this.listObj)
-      for (let i = 0, len = objKeyArr.length; i < len; i++) {
-        if (this.listObj[objKeyArr[i]].uid === uid) {
-          this.listObj[objKeyArr[i]].url = response.files.file
-          this.listObj[objKeyArr[i]].hasSuccess = true
-          return
-        }
-      }
-    },
+    // handleSuccess(response, file) {
+    //   console.log(file)
+    //   console.log(response)
+    //   const uid = file.uid
+    //   const objKeyArr = Object.keys(this.listObj)
+    //   for (let i = 0, len = objKeyArr.length; i < len; i++) {
+    //     if (this.listObj[objKeyArr[i]].uid === uid) {
+    //       this.listObj[objKeyArr[i]].url = response.files.file
+    //       this.listObj[objKeyArr[i]].hasSuccess = true
+    //       return
+    //     }
+    //   }
+    // },
     handleRemove(file) {
       const uid = file.uid
       const objKeyArr = Object.keys(this.listObj)
@@ -72,6 +78,7 @@ export default {
       const _self = this
       const _URL = window.URL || window.webkitURL
       const fileName = file.uid
+      // console.log(file.uid)
       this.listObj[fileName] = {}
       return new Promise((resolve, reject) => {
         const img = new Image()
@@ -80,6 +87,28 @@ export default {
           _self.listObj[fileName] = { hasSuccess: false, uid: file.uid, width: this.width, height: this.height }
         }
         resolve(true)
+      })
+    },
+    imgUpLoad(file) {
+      var pars = new FormData()
+      pars.append('file', file.file)
+      pars.append('uid', file.file.uid)
+      this.axios.post(`http://localhost:8080/api/upload`, pars).then(response => response.data).then(data => {
+        const uid = data.data.uid
+        const objKeyArr = Object.keys(this.listObj)
+        for (let i = 0, len = objKeyArr.length; i < len; i++) {
+          if (this.listObj[objKeyArr[i]].uid === parseInt(uid)) {
+            this.listObj[objKeyArr[i]].url = data.data.url
+            this.listObj[objKeyArr[i]].hasSuccess = true
+            this.$notify({
+              title: '成功',
+              message: '上传' + file.file.name + '成功',
+              type: 'success',
+              duration: 5000
+            })
+            return
+          }
+        }
       })
     }
   }

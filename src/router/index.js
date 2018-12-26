@@ -48,14 +48,14 @@ export const asyncRouterMap = [
   {
     path: '/user',
     component: Layout,
-    redirect: '/user/table',
+    redirect: '/user/list',
     name: 'User',
-    meta: { roles: ['superAdmin'], title: '通用管理', icon: 'example' },
+    meta: { roles: ['superadmin'], title: '通用管理', icon: 'example' },
     children: [
       {
-        path: 'table',
-        name: 'Table',
-        component: () => import('@/views/table/index'),
+        path: 'list',
+        name: 'UserList',
+        component: () => import('@/views/user/index'),
         meta: { title: '用户管理', icon: 'user' }
       },
       {
@@ -91,7 +91,7 @@ export const asyncRouterMap = [
     children: [
       { path: 'create', component: () => import('@/views/example/create'), name: 'createArticle', meta: { title: '新建谱子', icon: 'edit' }},
       { path: 'edit/:id(\\d+)', component: () => import('@/views/example/edit'), name: 'editArticle', meta: { title: '编辑谱子', noCache: true }, hidden: true },
-      { path: 'list', component: () => import('@/views/example/list'), name: 'articleList', meta: { title: '谱子列表', icon: 'list' }}
+      { path: 'list', component: () => import('@/views/example/list'), name: 'articleList', meta: { roles: ['superadmin', 'admin'], title: '谱子列表', icon: 'list' }}
     ]
   },
   { path: '*', redirect: '/404', hidden: true }
