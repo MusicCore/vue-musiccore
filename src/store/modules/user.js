@@ -38,13 +38,13 @@ const user = {
       const account = userInfo.account.trim()
       return new Promise((resolve, reject) => {
         login(account, userInfo.password).then(response => {
-          // console.log(response)
           const data = response.data
-          // console.log(data.token)
           setToken(data.token)
           commit('SET_ACCOUNT', account)
-          commit('SET_PSW', userInfo.password)
+          localStorage.setItem('music_score_account', account)
+          // commit('SET_PSW', userInfo.password)
           commit('SET_TOKEN', data.token)
+          localStorage.setItem('music_score_token', data.token)
           resolve()
         }).catch(error => {
           console.log(error)
