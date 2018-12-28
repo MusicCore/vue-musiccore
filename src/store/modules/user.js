@@ -4,6 +4,8 @@ import { getToken, setToken, removeToken } from '@/utils/auth'
 const user = {
   state: {
     token: getToken(),
+    account: '',
+    pswtemp: '',
     name: '',
     avatar: '',
     roles: []
@@ -21,19 +23,27 @@ const user = {
     },
     SET_ROLES: (state, roles) => {
       state.roles = roles
+    },
+    SET_ACCOUNT: (state, account) => {
+      state.account = account
+    },
+    SET_PSW: (state, pswtemp) => {
+      state.pswtemp = pswtemp
     }
   },
 
   actions: {
     // 登录
     Login({ commit }, userInfo) {
-      const username = userInfo.username.trim()
+      const account = userInfo.account.trim()
       return new Promise((resolve, reject) => {
-        login(username, userInfo.password).then(response => {
+        login(account, userInfo.password).then(response => {
           // console.log(response)
           const data = response.data
           // console.log(data.token)
           setToken(data.token)
+          commit('SET_ACCOUNT', account)
+          commit('SET_PSW', userInfo.password)
           commit('SET_TOKEN', data.token)
           resolve()
         }).catch(error => {
@@ -46,8 +56,9 @@ const user = {
     // 获取用户信息
     GetInfo({ commit, state }) {
       return new Promise((resolve, reject) => {
-        getInfo(state.token).then(response => {
+        getInfo(state.token, state.account, state.pswtemp).then(response => {
           const data = response.data
+          commit('SET_PSW', '')
           if (data.roles && data.roles.length > 0) { // 验证返回的roles是否是一个非空数组
             commit('SET_ROLES', data.roles)
           } else {

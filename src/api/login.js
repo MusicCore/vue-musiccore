@@ -1,11 +1,11 @@
 import request from '@/utils/request'
 
-export function login(username, password) {
+export function login(account, password) {
   return request({
     url: 'api/login',
     method: 'post',
     data: {
-      username,
+      account,
       password
     },
     Headers: {
@@ -14,11 +14,11 @@ export function login(username, password) {
   })
 }
 
-export function getInfo(token) {
+export function getInfo(token, account, password) {
   return request({
     url: 'api/info',
-    method: 'get',
-    params: { token },
+    method: 'post',
+    params: { token, account, password },
     Headers: {
       'Access-Control-Allow-Origin': '*'
     }

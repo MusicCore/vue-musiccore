@@ -2,11 +2,11 @@
   <div class="login-container">
     <el-form class="login-form" autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm" label-position="left">
       <h3 class="title">vue-element-admin</h3>
-      <el-form-item prop="username">
+      <el-form-item prop="account">
         <span class="svg-container svg-container_login">
           <svg-icon icon-class="user" />
         </span>
-        <el-input name="username" type="text" v-model="loginForm.username" autoComplete="on" placeholder="username" />
+        <el-input name="account" type="text" v-model="loginForm.account" autoComplete="on" placeholder="请输入帐号" />
       </el-form-item>
       <el-form-item prop="password">
         <span class="svg-container">
@@ -22,8 +22,8 @@
         </el-button>
       </el-form-item>
       <div class="tips">
-        <span style="margin-right:20px;">username: admin</span>
-        <span> password: admin</span>
+        <!-- <span style="margin-right:20px;">username: admin</span>
+        <span> password: admin</span> -->
       </div>
     </el-form>
   </div>
@@ -51,7 +51,7 @@ export default {
     }
     return {
       loginForm: {
-        username: 'admin',
+        account: 'admin',
         password: 'admin'
       },
       loginRules: {

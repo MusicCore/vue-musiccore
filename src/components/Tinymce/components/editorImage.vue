@@ -4,7 +4,8 @@
     </el-button>
     <el-dialog append-to-body :visible.sync="dialogVisible">
       <el-upload class="editor-slide-upload" action="http://localhost:8080/api/upload" :multiple="true" :file-list="fileList" :show-file-list="true"
-        list-type="picture-card" :on-remove="handleRemove"  :before-upload="beforeUpload" :http-request="imgUpLoad">
+        list-type="picture-card" :on-remove="handleRemove"  :before-upload="beforeUpload" :http-request="imgUpLoad"
+        accept=".jpg,.jpeg,.png,.gif,.bmp,.JPG,.JPEG,.PBG,.GIF,.BMP">
         <el-button size="small" type="primary">点击上传</el-button>
       </el-upload>
       <el-button @click="dialogVisible = false">取 消</el-button>
