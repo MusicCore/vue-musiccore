@@ -80,6 +80,8 @@ const user = {
           commit('SET_TOKEN', '')
           commit('SET_ROLES', [])
           removeToken()
+          localStorage.removeItem('music_score_account') // token过期后清除本地存储
+          localStorage.removeItem('music_score_token')
           resolve()
         }).catch(error => {
           reject(error)
