@@ -27,7 +27,7 @@ export function getInfo(token, account, password) {
 
 export function logout() {
   return request({
-    url: 'api/loginOut',
+    url: '/api/logout',
     method: 'post'
   })
 }
