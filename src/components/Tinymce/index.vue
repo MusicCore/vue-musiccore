@@ -3,18 +3,20 @@
     <textarea class="tinymce-textarea" :id="tinymceId"></textarea>
     <div class="editor-custom-btn-container">
       <editorImage color="#1890ff" class="editor-upload-btn" @successCBK="imageSuccessCBK"></editorImage>
+      <editorMusic color="#1890ff" class="editor-upload-btn" @successCBKmus="musicSuccessCBK"></editorMusic>
     </div>
   </div>
 </template>
 
 <script>
 import editorImage from './components/editorImage'
+import editorMusic from './components/editorMusic'
 import plugins from './plugins'
 import toolbar from './toolbar'
 
 export default {
   name: 'tinymce',
-  components: { editorImage },
+  components: { editorImage, editorMusic },
   props: {
     id: {
       type: String
@@ -152,6 +154,12 @@ export default {
       const _this = this
       arr.forEach(v => {
         window.tinymce.get(_this.tinymceId).insertContent(`<img class="wscnph" src="${v.url}" >`)
+      })
+    },
+    musicSuccessCBK(arr) {
+      const _this = this
+      arr.forEach(v => {
+        window.tinymce.get(_this.tinymceId).insertContent(`<audio src="${v.url}" controlsList="nodownload" controls="controls" >您的浏览器不支持audio，请考虑更换浏览器！</audio>`)
       })
     }
   },

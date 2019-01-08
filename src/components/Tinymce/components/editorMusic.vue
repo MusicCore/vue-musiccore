@@ -1,28 +1,28 @@
 <template>
   <div class="upload-container">
-    <el-button icon='el-icon-upload' size="mini" :style="{background:color,borderColor:color}" @click=" dialogVisible=true" type="primary">上传图片
+    <el-button icon='el-icon-upload' size="mini" :style="{background:color,borderColor:color}" @click=" dialogVisible=true" type="primary">上传音乐
     </el-button>
     <el-dialog append-to-body :visible.sync="dialogVisible">
       <el-upload class="editor-slide-upload" action="http://localhost:8080/api/upload" :multiple="true" :file-list="fileList" :show-file-list="true"
-        list-type="picture-card" :on-remove="handleRemove"  :before-upload="beforeUpload" :http-request="imgUpLoad"
-        accept=".jpg,.jpeg,.png,.gif,.bmp,.JPG,.JPEG,.PBG,.GIF,.BMP">
-        <el-button size="small" type="primary">上传图片</el-button>
+        list-type="picture-card" :limit="1" :on-remove="handleRemove"  :before-upload="beforeUpload" :http-request="musicUpLoad"
+        accept="">
+        <el-button size="small" type="primary">上传音乐</el-button>
       </el-upload>
       <el-button @click="dialogVisible = false">取 消</el-button>
       <el-button type="primary" @click="handleSubmit">确 定</el-button>
     </el-dialog>
   </div>
 </template>
-
 <script>
 // import { getToken } from 'api/qiniu'
 import { getToken } from '@/utils/auth'
 import Vue from 'vue'
 import axios from 'axios'
+
 Vue.prototype.axios = axios
 
 export default {
-  name: 'editorSlideUpload',
+  name: 'editorMusicUpload',
   props: {
     color: {
       type: String,
@@ -47,7 +47,7 @@ export default {
         return
       }
       console.log(arr)
-      this.$emit('successCBK', arr)
+      this.$emit('successCBKmus', arr)
       this.listObj = {}
       this.fileList = []
       this.dialogVisible = false
@@ -77,20 +77,13 @@ export default {
     },
     beforeUpload(file) {
       const _self = this
-      const _URL = window.URL || window.webkitURL
       const fileName = file.uid
+      console.log(fileName)
       // console.log(file.uid)
       this.listObj[fileName] = {}
-      return new Promise((resolve, reject) => {
-        const img = new Image()
-        img.src = _URL.createObjectURL(file)
-        img.onload = function() {
-          _self.listObj[fileName] = { hasSuccess: false, uid: file.uid, width: this.width, height: this.height }
-        }
-        resolve(true)
-      })
+      _self.listObj[fileName] = { hasSuccess: false, uid: file.uid }
     },
-    imgUpLoad(file) {
+    musicUpLoad(file) {
       var pars = new FormData()
       pars.append('file', file.file)
       pars.append('uid', file.file.uid)
@@ -99,7 +92,7 @@ export default {
           'X-Token': getToken()
         }
       }
-      this.axios.post(`http://localhost:8080/api/imgupload`, pars, config).then(response => response.data).then(data => {
+      this.axios.post(`http://localhost:8080/api/musicupload`, pars, config).then(response => response.data).then(data => {
         const uid = data.data.uid
         const objKeyArr = Object.keys(this.listObj)
         for (let i = 0, len = objKeyArr.length; i < len; i++) {

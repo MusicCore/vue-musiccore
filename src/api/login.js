@@ -7,9 +7,6 @@ export function login(account, password) {
     data: {
       account,
       password
-    },
-    Headers: {
-      'Access-Control-Allow-Origin': '*'
     }
   })
 }
@@ -18,10 +15,7 @@ export function getInfo(token, account, password) {
   return request({
     url: 'api/info',
     method: 'post',
-    params: { token, account, password },
-    Headers: {
-      'Access-Control-Allow-Origin': '*'
-    }
+    params: { token, account, password }
   })
 }
 
