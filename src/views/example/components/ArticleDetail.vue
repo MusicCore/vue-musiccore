@@ -84,9 +84,8 @@ import MDinput from '@/components/MDinput'
 import Multiselect from 'vue-multiselect'// 使用的一个多选框组件，element-ui的select不能满足所有需求
 import 'vue-multiselect/dist/vue-multiselect.min.css'// 多选框组件css
 import Sticky from '@/components/Sticky' // 粘性header组件
-import { validateURL } from '@/utils/validate'
-import { fetchArticle } from '@/api/article'
-import { createArticle } from '@/api/article'
+// import { validateURL } from '@/utils/validate'
+import { fetchArticle, createArticle } from '@/api/article'
 import { userSearch } from '@/api/remoteSearch'
 import Warning from './Warning'
 import { DeleteDropdown, ModifyDropdown, PlatformDropdown, SourceUrlDropdown } from './Dropdown'
@@ -97,7 +96,7 @@ const defaultForm = {
   title: '', // 文章题目
   content: '', // 文章内容
   content_short: '', // 文章摘要
-  source_uri: '', // 文章外链
+  // source_uri: '', // 文章外链
   content_music: '', // 文章音乐
   content_img: '', // 封面图片
   // image_uri: '', // 文章图片
@@ -130,21 +129,21 @@ export default {
         callback()
       }
     }
-    const validateSourceUri = (rule, value, callback) => {
-      if (value) {
-        if (validateURL(value)) {
-          callback()
-        } else {
-          this.$message({
-            message: '外链url填写不正确',
-            type: 'error'
-          })
-          callback(null)
-        }
-      } else {
-        callback()
-      }
-    }
+    // const validateSourceUri = (rule, value, callback) => {
+    //   if (value) {
+    //     if (validateURL(value)) {
+    //       callback()
+    //     } else {
+    //       this.$message({
+    //         message: '外链url填写不正确',
+    //         type: 'error'
+    //       })
+    //       callback(null)
+    //     }
+    //   } else {
+    //     callback()
+    //   }
+    // }
     return {
       postForm: Object.assign({}, defaultForm),
       loading: false,
@@ -152,8 +151,8 @@ export default {
       rules: {
         image_uri: [{ validator: validateRequire }],
         title: [{ validator: validateRequire }],
-        content: [{ validator: validateRequire }],
-        source_uri: [{ validator: validateSourceUri, trigger: 'blur' }]
+        content: [{ validator: validateRequire }]
+        // source_uri: [{ validator: validateSourceUri, trigger: 'blur' }]
       }
     }
   },
@@ -182,12 +181,12 @@ export default {
       })
     },
     submitForm() {
-      this.postForm.display_time = parseInt(this.display_time / 1000)
-      console.log(this.postForm)
-      this.$refs.postForm.validate(valid => {
+      // this.postForm.display_time = parseInt(this.display_time / 1000)
+      this.$refs.postForm.validate(valid => { // 表单验证
         if (valid) {
+          console.log(this.postForm)
           this.loading = true
-          createArticle(JSON.stringify(this.$refs.postForm)).then(response => {
+          createArticle(JSON.parse(JSON.stringify(this.postForm))).then(response => {
             this.$notify({
               title: '成功',
               message: '发布文章成功',
