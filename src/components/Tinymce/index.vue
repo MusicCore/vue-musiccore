@@ -4,11 +4,13 @@
     <div class="editor-custom-btn-container">
       <editorImage color="#1890ff" class="editor-upload-btn" @successCBK="imageSuccessCBK"></editorImage>
       <editorMusic color="#1890ff" class="editor-upload-btn" @successCBKmus="musicSuccessCBK"></editorMusic>
+      <editorImgFm color="#1890ff" class="editor-upload-btn" @successCBKimgFm="successCBKimgFm"></editorImgFm>
     </div>
   </div>
 </template>
 
 <script>
+import editorImgFm from './components/editorImgFm'
 import editorImage from './components/editorImage'
 import editorMusic from './components/editorMusic'
 import plugins from './plugins'
@@ -16,7 +18,7 @@ import toolbar from './toolbar'
 
 export default {
   name: 'tinymce',
-  components: { editorImage, editorMusic },
+  components: { editorImage, editorMusic, editorImgFm },
   props: {
     id: {
       type: String
@@ -157,10 +159,10 @@ export default {
       })
     },
     musicSuccessCBK(arr) {
-      const _this = this
-      arr.forEach(v => {
-        window.tinymce.get(_this.tinymceId).insertContent(`<audio src="${v.url}" controlsList="nodownload" controls="controls" >您的浏览器不支持audio，请考虑更换浏览器！</audio>`)
-      })
+      this.$emit('successMusic', arr)
+    },
+    successCBKimgFm(arr) {
+      this.$emit('successImgFm', arr)
     }
   },
   destroyed() {

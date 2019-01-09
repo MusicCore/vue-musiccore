@@ -58,10 +58,14 @@
           <el-input type="textarea" class="article-textarea" :rows="1" autosize placeholder="请输入内容" v-model="postForm.content_short">
           </el-input>
           <span class="word-counter" v-show="contentShortLength">{{contentShortLength}}字</span>
+          生成音乐路径：<el-input type="text" v-model="postForm.content_music" />
+          生成封面路径：<el-input type="text" v-model="postForm.content_img" />
         </el-form-item>
-
+        <!-- <span v-if="postForm.content_img != '' || this.defaultForm.content_img != ''">
+          <img :src="postForm.content_img">
+        </span> -->
         <div class="editor-container">
-          <Tinymce :height=400 ref="editor" v-model="postForm.content" />
+          <Tinymce :height=400 ref="editor" v-model="postForm.content" @successMusic="successMusic" @successImgFm="successImgFm"/>
         </div>
 
         <!-- <div style="margin-bottom: 20px;">
@@ -93,6 +97,8 @@ const defaultForm = {
   content: '', // 文章内容
   content_short: '', // 文章摘要
   source_uri: '', // 文章外链
+  content_music: '', // 文章音乐
+  content_img: '', // 封面图片
   // image_uri: '', // 文章图片
   // display_time: undefined, // 前台展示时间
   id: undefined,
@@ -215,6 +221,17 @@ export default {
         if (!response.data.items) return
         this.userListOptions = response.data.items.map(v => v.name)
       })
+    },
+    successMusic(arr) {
+      arr.forEach(v => {
+        this.postForm.content_music = v.url
+      })
+    },
+    successImgFm(arr) {
+      arr.forEach(v => {
+        this.postForm.content_img = v.url
+      })
+      console.log(this.postForm)
     }
   }
 }
