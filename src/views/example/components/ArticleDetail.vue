@@ -85,7 +85,8 @@ import Multiselect from 'vue-multiselect'// 使用的一个多选框组件，ele
 import 'vue-multiselect/dist/vue-multiselect.min.css'// 多选框组件css
 import Sticky from '@/components/Sticky' // 粘性header组件
 import { validateURL } from '@/utils/validate'
-import { fetchArticle,createArticle } from '@/api/article'
+import { fetchArticle } from '@/api/article'
+import { createArticle } from '@/api/article'
 import { userSearch } from '@/api/remoteSearch'
 import Warning from './Warning'
 import { DeleteDropdown, ModifyDropdown, PlatformDropdown, SourceUrlDropdown } from './Dropdown'
@@ -186,7 +187,7 @@ export default {
       this.$refs.postForm.validate(valid => {
         if (valid) {
           this.loading = true
-          createArticle(this.$refs.postForm).then(response => {
+          createArticle(JSON.stringify(this.$refs.postForm)).then(response => {
             this.$notify({
               title: '成功',
               message: '发布文章成功',
