@@ -16,7 +16,7 @@
 
       <el-table-column width="150px" align="center" label="作者帐号">
         <template slot-scope="scope">
-          <span>{{scope.row.author_account}}</span>
+          <span>{{scope.row.authorAccount}}</span>
         </template>
       </el-table-column>
 
@@ -25,22 +25,22 @@
           <span>{{scope.row.author_name}}</span>
         </template>
       </el-table-column> -->
-      
+
       <el-table-column align="center" label="创建日期" width="200px">
         <template slot-scope="scope">
-          <span>{{scope.row.create_time}}</span>
+          <span>{{scope.row.createTime}}</span>
         </template>
       </el-table-column>
-      
+
       <el-table-column align="center" label="更新日期" width="200px">
         <template slot-scope="scope">
-          <span>{{scope.row.update_time}}</span>
+          <span>{{scope.row.updateTime}}</span>
         </template>
       </el-table-column>
 
       <el-table-column align="center" label="更新人" width="120px">
         <template slot-scope="scope">
-          <span>{{scope.row.last_author}}</span>
+          <span>{{scope.row.lastAuthor}}</span>
         </template>
       </el-table-column>
 
@@ -52,7 +52,7 @@
 
       <el-table-column  align="center" class-name="status-col" label="状态" width="120px">
         <template slot-scope="scope">
-          <el-tag :type="scope.row.is_modify | statusFilter"><span v-if="scope.row.is_modify===1">可以编辑</span><span v-if="scope.row.is_modify===0">不可编辑</span></el-tag>
+          <el-tag :type="scope.row.isModify | statusFilter"><span v-if="scope.row.isModify===1">可以编辑</span><span v-if="scope.row.isModify===0">不可编辑</span></el-tag>
         </template>
       </el-table-column>
 
@@ -125,6 +125,9 @@ export default {
         this.list = response.data.items
         this.total = response.data.total
         this.listLoading = false
+      }).catch(err => {
+        this.listLoading = false
+        console.log(err)
       })
     },
     handleSizeChange(val) {

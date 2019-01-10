@@ -3,15 +3,15 @@ import request from '@/utils/request'
 export function getUserList(params) {
   return request({
     url: 'api/userlist',
-    method: 'get',
+    method: 'post',
     params
   })
 }
 
-export function updateUser(params) {
+export function updateUser(data) {
   return request({
-    url: 'api/userlist',
-    method: 'get',
-    params
+    url: 'api/userupdate',
+    method: 'post',
+    data
   })
 }

@@ -106,7 +106,7 @@
         <el-button v-else type="primary" @click="updateData">确认</el-button>
       </div>
     </el-dialog>
-  </div>  
+  </div>
 </template>
 
 <script>
@@ -227,6 +227,7 @@ export default {
               }
             }
             this.dialogFormVisible = false
+            this.loading = false
             this.$notify({
               title: '成功',
               message: '更新成功',

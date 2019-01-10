@@ -3,8 +3,8 @@
     <el-form class="form-container" :model="postForm" :rules="rules" ref="postForm">
 
       <sticky :className="'sub-navbar '+postForm.status">
-        <ModifyDropdown v-model="postForm.is_modify" />
-        <span v-if="roles[0] === 'superadmin' || roles[0] === 'admin'"><DeleteDropdown v-model="postForm.is_delete" /></span>
+        <ModifyDropdown v-model="postForm.isModify" />
+        <span v-if="roles[0] === 'superadmin' || roles[0] === 'admin'"><DeleteDropdown v-model="postForm.isDelete" /></span>
         <!-- <PlatformDropdown v-model="postForm.types" /> -->
         <!-- <SourceUrlDropdown v-model="postForm.source_uri" /> -->
         <el-button v-loading="loading" style="margin-left: 10px;" type="success" @click="submitForm">发布
@@ -55,14 +55,14 @@
         </el-row>
 
         <el-form-item style="margin-bottom: 40px;" label-width="45px" label="摘要:">
-          <el-input type="textarea" class="article-textarea" :rows="1" autosize placeholder="请输入内容" v-model="postForm.content_short">
+          <el-input type="textarea" class="article-textarea" :rows="1" autosize placeholder="请输入内容" v-model="postForm.contentShort">
           </el-input>
           <span class="word-counter" v-show="contentShortLength">{{contentShortLength}}字</span>
-          生成音乐路径：<el-input type="text" v-model="postForm.content_music" />
-          生成封面路径：<el-input type="text" v-model="postForm.content_img" />
+          <!--生成音乐路径：<el-input type="text" v-model="postForm.contentMusic" />-->
+          <!--生成封面路径：<el-input type="text" v-model="postForm.contentImg" />-->
         </el-form-item>
-        <!-- <span v-if="postForm.content_img != '' || this.defaultForm.content_img != ''">
-          <img :src="postForm.content_img">
+        <!-- <span v-if="postForm.contentImg != '' || this.defaultForm.contentImg != ''">
+          <img :src="postForm.contentImg">
         </span> -->
         <div class="editor-container">
           <Tinymce :height=400 ref="editor" v-model="postForm.content" @successMusic="successMusic" @successImgFm="successImgFm"/>
@@ -95,17 +95,17 @@ const defaultForm = {
   status: 'draft',
   title: '', // 文章题目
   content: '', // 文章内容
-  content_short: '', // 文章摘要
+  contentShort: '', // 文章摘要
   // source_uri: '', // 文章外链
-  content_music: '', // 文章音乐
-  content_img: '', // 封面图片
+  contentMusic: '', // 文章音乐
+  contentImg: '', // 封面图片
   // image_uri: '', // 文章图片
   // display_time: undefined, // 前台展示时间
   id: undefined,
   // types: ['pic'],
   // importance: 0 , // 星级重要性
-  is_modify: 1, // 下拉
-  is_delete: 0
+  isModify: 1, // 下拉
+  isDelete: 0
 }
 
 export default {
@@ -158,7 +158,7 @@ export default {
   },
   computed: {
     contentShortLength() {
-      return this.postForm.content_short.length
+      return this.postForm.contentShort.length
     },
     ...mapGetters([
       'roles'
@@ -230,12 +230,12 @@ export default {
     },
     successMusic(arr) {
       arr.forEach(v => {
-        this.postForm.content_music = v.url
+        this.postForm.contentMusic = v.url
       })
     },
     successImgFm(arr) {
       arr.forEach(v => {
-        this.postForm.content_img = v.url
+        this.postForm.contentImg = v.url
       })
       console.log(this.postForm)
     }
