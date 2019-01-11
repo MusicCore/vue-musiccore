@@ -1,6 +1,6 @@
 import { login, logout, getInfo } from '@/api/login'
 import { getToken, setToken, removeToken } from '@/utils/auth'
-
+import { setUserInfo } from '@/utils/user'
 const user = {
   state: {
     token: getToken(),
@@ -38,8 +38,9 @@ const user = {
       const account = userInfo.account.trim()
       return new Promise((resolve, reject) => {
         login(account, userInfo.password).then(response => {
-          const data = response.data
+          const data = response.data.commonContext
           setToken(data.token)
+          // setUserInfo(data)
           commit('SET_ACCOUNT', account)
           localStorage.setItem('music_score_account', account)
           // commit('SET_PSW', userInfo.password)
