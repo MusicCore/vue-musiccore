@@ -7,7 +7,9 @@
         <span v-if="roles[0] === 'superadmin' || roles[0] === 'admin'"><DeleteDropdown v-model="postForm.isDelete" /></span>
         <!-- <PlatformDropdown v-model="postForm.types" /> -->
         <!-- <SourceUrlDropdown v-model="postForm.source_uri" /> -->
-        <el-button v-loading="loading" style="margin-left: 10px;" type="success" @click="submitForm">发布
+        <el-button v-if="postForm.isUpdate" v-loading="loading" style="margin-left: 10px;" type="success" @click="submitForm">发布
+        </el-button>
+        <el-button v-else v-loading="loading" style="margin-left: 10px;" type="success" @click="updateForm">修改
         </el-button>
         <!-- <el-button v-loading="loading" type="warning" @click="draftForm">草稿</el-button> -->
       </sticky>
@@ -86,6 +88,7 @@ import 'vue-multiselect/dist/vue-multiselect.min.css'// 多选框组件css
 import Sticky from '@/components/Sticky' // 粘性header组件
 // import { validateURL } from '@/utils/validate'
 import { fetchArticle, createArticle } from '@/api/article'
+import { updateArticle } from '@/api/article'
 import { userSearch } from '@/api/remoteSearch'
 import Warning from './Warning'
 import { DeleteDropdown, ModifyDropdown, PlatformDropdown, SourceUrlDropdown } from './Dropdown'
@@ -105,7 +108,8 @@ const defaultForm = {
   // types: ['pic'],
   // importance: 0 , // 星级重要性
   isModify: 1, // 下拉
-  isDelete: 0
+  isDelete: 0,
+  isUpdate: 1
 }
 
 export default {
@@ -175,7 +179,9 @@ export default {
   methods: {
     fetchData(id) {
       fetchArticle(id).then(response => {
-        this.postForm = response.data
+        this.postForm = response.data.data
+        this.postForm.isUpdate = 0
+        console.log(this.postForm)
       }).catch(err => {
         console.log(err)
       })
@@ -190,6 +196,30 @@ export default {
             this.$notify({
               title: '成功',
               message: '发布文章成功',
+              type: 'success',
+              duration: 2000
+            })
+            this.postForm.status = 'published'
+            this.loading = false
+          }).catch(err => {
+            this.loading = false
+            console.log(err)
+          })
+        } else {
+          this.loading = false
+          console.log('error submit!!')
+          return false
+        }
+      })
+    },
+    updateForm() {
+      this.$refs.postForm.validate(valid => { // 表单验证
+        if (valid) {
+          this.loading = true
+          updateArticle(JSON.parse(JSON.stringify(this.postForm))).then(response => {
+            this.$notify({
+              title: '成功',
+              message: '更新文章成功',
               type: 'success',
               duration: 2000
             })

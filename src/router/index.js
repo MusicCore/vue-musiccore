@@ -62,7 +62,8 @@ export const asyncRouterMap = [
         path: 'permission',
         name: 'Permission',
         component: () => import('@/views/tree/index'),
-        meta: { title: '权限管理', icon: 'lock' }
+        meta: { title: '权限管理', icon: 'lock' },
+        hidden: true
       }
     ]
   },
