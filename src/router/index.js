@@ -57,27 +57,14 @@ export const asyncRouterMap = [
         name: 'UserList',
         component: () => import('@/views/user/index'),
         meta: { title: '用户管理', icon: 'user' }
-      },
-      {
-        path: 'permission',
-        name: 'Permission',
-        component: () => import('@/views/tree/index'),
-        meta: { title: '权限管理', icon: 'lock' },
-        hidden: true
       }
-    ]
-  },
-  {
-    path: '/form',
-    component: Layout,
-    meta: { roles: ['user'], title: '普通' },
-    children: [
-      {
-        path: 'index',
-        name: 'Form',
-        component: () => import('@/views/form/index'),
-        meta: { title: 'Form', icon: 'form' }
-      }
+      // {
+      //   path: 'permission',
+      //   name: 'Permission',
+      //   component: () => import('@/views/tree/index'),
+      //   meta: { title: '权限管理', icon: 'lock' },
+      //   hidden: true
+      // }
     ]
   },
   {

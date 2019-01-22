@@ -174,8 +174,8 @@ export default {
     fetchData() {
       this.listLoading = true
       var pars = new URLSearchParams()
-      pars.append('pageSize', this.page.pageSize)
-      pars.append('currentPage', this.page.currentPage)
+      pars.append('rows', this.page.pageSize)
+      pars.append('pageStart', this.page.currentPage)
       getUserList(pars).then(response => {
         console.log(response.data)
         this.list = response.data.items

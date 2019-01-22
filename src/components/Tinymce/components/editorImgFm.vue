@@ -5,7 +5,7 @@
     <el-dialog append-to-body :visible.sync="dialogVisible">
       <el-upload class="editor-slide-upload" action="http://localhost:8080/api/upload" :multiple="true" :file-list="fileList" :show-file-list="true"
         list-type="picture-card" :limit="1" :on-remove="handleRemove"  :before-upload="beforeUpload" :http-request="imgFmUpLoad"
-        accept="">
+        accept=".jpg,.jpeg,.png,.gif,.bmp,.JPG,.JPEG,.PBG,.GIF,.BMP">
         <el-button size="small" type="primary">上传图片</el-button>
       </el-upload>
       <el-button @click="dialogVisible = false">取 消</el-button>
