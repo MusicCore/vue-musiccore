@@ -99,7 +99,7 @@ export default {
           'X-Token': getToken()
         }
       }
-      this.axios.post(`http://localhost:8080/api/imgupload`, pars, config).then(response => response.data).then(data => {
+      this.axios.post(`http://167.179.96.195:8001/api/imgupload`, pars, config).then(response => response.data).then(data => {
         const uid = data.data.uid
         const objKeyArr = Object.keys(this.listObj)
         for (let i = 0, len = objKeyArr.length; i < len; i++) {
