@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function login(account, password) {
   return request({
-    url: 'api/login',
+    url: '/api/vue/login',
     method: 'post',
     data: {
       account,
@@ -13,7 +13,7 @@ export function login(account, password) {
 
 export function getInfo(token, account, password) {
   return request({
-    url: 'api/info',
+    url: '/api/vue/info',
     method: 'post',
     params: { token, account, password }
   })
@@ -21,7 +21,7 @@ export function getInfo(token, account, password) {
 
 export function logout() {
   return request({
-    url: '/api/logout',
+    url: '/api/vue/logout',
     method: 'post'
   })
 }

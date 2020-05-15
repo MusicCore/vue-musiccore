@@ -77,8 +77,8 @@ export const asyncRouterMap = [
       icon: 'documentation'
     },
     children: [
-      { path: 'create', component: () => import('@/views/example/create'), name: 'createArticle', meta: { title: '新建谱子', icon: 'edit' }},
-      { path: 'edit/:id(\\d+)', component: () => import('@/views/example/edit'), name: 'editArticle', meta: { title: '编辑谱子', noCache: true }, hidden: true },
+      // { path: 'create', component: () => import('@/views/example/create'), name: 'createArticle', meta: { title: '新建谱子', icon: 'edit' }},
+      // { path: 'edit/:id(\\d+)', component: () => import('@/views/example/edit'), name: 'editArticle', meta: { title: '编辑谱子', noCache: true }, hidden: true },
       { path: 'list', component: () => import('@/views/example/list'), name: 'articleList', meta: { roles: ['superadmin', 'admin'], title: '谱子列表', icon: 'list' }}
     ]
   },

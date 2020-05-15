@@ -29,13 +29,13 @@
       <el-table-column label="注册时间" width="auto" align="center">
         <template slot-scope="scope">
           <i class="el-icon-time"></i>
-          <span>{{scope.row.create_time}}</span>
+          <span>{{scope.row.createtime}}</span>
         </template>
       </el-table-column>
       <el-table-column label="修改时间" width="auto" align="center">
         <template slot-scope="scope">
           <i class="el-icon-time"></i>
-          <span>{{scope.row.update_time}}</span>
+          <span>{{scope.row.updatetime}}</span>
         </template>
       </el-table-column>
       <el-table-column class-name="状态" label="Status" width="auto" align="center">

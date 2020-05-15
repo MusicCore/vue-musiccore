@@ -64,18 +64,25 @@
 
       <el-table-column min-width="auto" label="标题">
         <template slot-scope="scope">
-
-          <router-link class="link-type" :to="'/article/edit/'+scope.row.id">
+<el-popover
+    placement="left-start"
+    :title="scope.row.title"
+    width="80%"
+    trigger="hover">
+     <div class="popover-content tips_div" v-html="scope.row.content"></div>
+    <a slot="reference">{{ scope.row.title }}</a>
+  </el-popover>
+          <!-- <router-link class="link-type" :to="'/article/edit/'+scope.row.id">
             <span>{{ scope.row.title }}</span>
-          </router-link>
+          </router-link> -->
         </template>
       </el-table-column>
 
       <el-table-column align="center" label="操作" width="120px">
         <template slot-scope="scope">
-          <router-link :to="'/article/edit/'+scope.row.id">
-            <el-button type="primary" size="small" icon="el-icon-edit">编辑</el-button>
-          </router-link>
+          <!-- <router-link :to="'/article/edit/'+scope.row.id"> -->
+            <el-button @click="deleteMusicById(scope.row.id)" type="danger" size="small" icon="el-icon-delete">删除</el-button>
+          <!-- </router-link> -->
         </template>
       </el-table-column>
     </el-table>
@@ -86,11 +93,22 @@
       </el-pagination>
     </div>
 
+<!-- <el-dialog
+  :title="content"
+  :visible.sync="dialogVisible"
+  width="80%">
+  <span v-html="content"></span>
+  <span slot="footer" class="dialog-footer">
+    <el-button @click="dialogVisible = false">取 消</el-button>
+    <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+  </span>
+</el-dialog> -->
+
   </div>
 </template>
 
 <script>
-import { fetchList } from '@/api/article'
+import { fetchList, deleteMusic } from '@/api/article'
 
 export default {
   name: 'articleList',
@@ -98,6 +116,7 @@ export default {
     return {
       list: null,
       total: 0,
+      dialogVisible: false,
       listLoading: true,
       listQuery: {
         pageStart: 1,
@@ -130,6 +149,39 @@ export default {
         console.log(err)
       })
     },
+    deleteMusicById(id) {
+      this.$confirm('此操作将永久删除该数据, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        deleteMusic(id).then(response => {
+          if (response.code === 200) {
+            this.$notify({
+              title: '成功',
+              message: '删除曲谱ID:' + id + '成功',
+              type: 'success',
+              duration: 5000
+            })
+            this.getList()
+          } else {
+            this.$notify({
+              title: response.data.message,
+              message: '删除曲谱ID:' + id + '失败',
+              type: 'error',
+              duration: 5000
+            })
+          }
+        }).catch(err => {
+          console.log(err)
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
+      })
+    },
     handleSizeChange(val) {
       this.listQuery.rows = val
       this.getList()
@@ -150,5 +202,8 @@ export default {
   position: absolute;
   right: 15px;
   top: 10px;
+}
+.tips_div {
+  width: 80%;
 }
 </style>
